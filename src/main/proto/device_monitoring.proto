@@ -1,0 +1,38 @@
+// device_monitoring.proto
+// =============================================================================
+// Service 1: DeviceMonitoringService
+// Purpose: Continuously collects real-time sensor data from
+//          factory machines, forming the base data layer.
+// RPC style: Client Streaming
+// The client keeps pushing a stream of sensor readings;
+// the server acknowledges once after the stream ends.
+// =============================================================================
+syntax = "proto3";
+
+package smartfactory.monitoring;
+
+option java_package = "com.smartfactory.monitoring.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "DeviceMonitoringProto";
+
+service DeviceMonitoringService {
+  // Client-streaming RPC: client sends many SensorReading messages,
+  // server replies once with a StreamAck after the stream completes.
+  rpc streamSensorData(stream SensorReading) returns (StreamAck);
+}
+
+// Request message: a single sensor reading
+message SensorReading {
+  string deviceId   = 1; //unique identifier of the machine sending data
+  int64  timestamp  = 2; //time of reading, ms since epoch
+  float  temperature = 3; //measured temperature in °C
+  float  vibration  = 4; //measured vibration amplitude in mm/s
+  int32  rpm        = 5; //current rotational speed of the machine
+}
+
+//Response message: stream acknowledgement
+message StreamAck {
+  string status        = 1; //confirmation message once stream is fully received
+  int32  receivedCount  = 2; //total readings received in the session
+}
+
