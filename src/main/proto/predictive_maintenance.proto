@@ -1,0 +1,59 @@
+// predictive_maintenance.proto
+// =============================================================================
+// Service 2: PredictiveMaintenanceService
+// Purpose: Analyzes device data to estimate equipment health
+//          and raise early alerts for high-risk machines.
+//
+// This service uses TWO RPC styles:
+//   1) analyzeDeviceHealth  -> Unary RPC
+//   2) subscribeAlerts      -> Server-streaming RPC
+// =============================================================================
+syntax = "proto3";
+
+package smartfactory.maintenance;
+
+option java_package = "com.smartfactory.maintenance.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "PredictiveMaintenanceProto";
+
+service PredictiveMaintenanceService {
+  // Unary RPC: client submits the latest reading for one device,
+  // server returns a single health assessment.
+  rpc analyzeDeviceHealth(DeviceReadingRequest) returns (HealthAssessment);
+
+  // Server-streaming RPC: client subscribes once with a risk threshold,
+  // server continuously pushes alerts whenever a device's health score
+  // falls below that threshold.
+  rpc subscribeAlerts(AlertSubscriptionRequest) returns (stream AlertMessage);
+}
+
+// Request for analyzeDeviceHealth (same field meanings as Service 1)
+message DeviceReadingRequest {
+  string deviceId    = 1;
+  int64  timestamp   = 2;
+  float  temperature = 3;
+  float  vibration   = 4;
+  int32  rpm         = 5;
+}
+
+// Response for analyzeDeviceHealth: the health assessment result
+message HealthAssessment {
+  int32  healthScore = 1; //0 (critical) to 100 (perfect)
+  string riskLevel   = 2; //"Normal" | "Warning" | "Critical"
+  string suggestion  = 3; //recommended maintenance action
+}
+
+
+// Request for subscribeAlerts: subscribe with a risk threshold
+message AlertSubscriptionRequest {
+  int32 threshold = 1; //health score below which an alert fires
+}
+
+
+// Response for subscribeAlerts: a single alert (server streams many of these)
+message AlertMessage {
+  string deviceId      = 1; // identifier of the affected machine
+  string alertMessage  = 2; // description of the detected problem
+  int64  timestamp     = 3; // time the alert was generated
+}
+

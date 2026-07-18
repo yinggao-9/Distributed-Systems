@@ -1,0 +1,39 @@
+// energy_optimization.proto
+// =============================================================================
+// Service 3: EnergyOptimizationService
+// Purpose: Monitors real-time power usage across machines and
+//          issues rule-based scheduling advice to reduce waste without disrupting production.
+
+// RPC style: Bidirectional Streaming
+//   The client continuously reports power usage while the server
+//   simultaneously streams back scheduling advice based on a threshold rule.
+// =============================================================================
+syntax = "proto3";
+
+package smartfactory.energy;
+
+option java_package = "com.smartfactory.energy.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "EnergyOptimizationProto";
+
+service EnergyOptimizationService {
+  // Bidirectional-streaming RPC: client stream of PowerUsageReport
+  // <-> server stream of SchedulingAdvice, both open at the same time.
+  rpc reportEnergyUsage(stream PowerUsageReport) returns (stream SchedulingAdvice);
+}
+
+// Client -> server: a live power-consumption reading
+message PowerUsageReport {
+  string deviceId          = 1; // identifier of the machine reporting usage
+  float  powerConsumption  = 2; // current power draw in kW
+  int64  timestamp         = 3; // time of the reading
+}
+
+
+// Server -> client: scheduling advice
+message SchedulingAdvice {
+  string deviceId          = 1; // identifier of the machine the advice applies to
+  string scheduledAction   = 2; // recommended action
+  float  estimatedSavings  = 3; // estimated energy saved in kWh
+}
+
