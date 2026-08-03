@@ -51,7 +51,14 @@
       <artifactId>jmdns</artifactId>
       <version>${jmdns.version}</version>
     </dependency>
+    <dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-simple</artifactId>
+    <version>2.0.9</version>
+    </dependency>
   </dependencies>
+  
+  
 
   <build>
     <extensions>

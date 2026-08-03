@@ -44,7 +44,7 @@ public class GrpcErrorUtil {
 
     /**
      * Validates a numeric field is not obviously out of range.
-     * Simple example used across services: rpm must not be negative.
+     * Simple example used across services: rpm must not be negative.       
      */
     public static void requireNonNegative(int value, String fieldName) {
         if (value < 0) {
@@ -97,3 +97,4 @@ public class GrpcErrorUtil {
     }
     
 }
+ 

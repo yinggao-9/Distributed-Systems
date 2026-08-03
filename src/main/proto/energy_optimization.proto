@@ -18,7 +18,7 @@ option java_outer_classname = "EnergyOptimizationProto";
 
 service EnergyOptimizationService {
   // Bidirectional-streaming RPC: client stream of PowerUsageReport
-  // <-> server stream of SchedulingAdvice, both open at the same time.
+  // <-> server stream of  SchedulingAdvice, both open at the same time.
   rpc reportEnergyUsage(stream PowerUsageReport) returns (stream SchedulingAdvice);
 }
 
