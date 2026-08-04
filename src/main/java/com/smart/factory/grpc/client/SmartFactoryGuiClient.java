@@ -306,7 +306,7 @@ public class SmartFactoryGuiClient extends JFrame {
                 }
             };
 
-            // ClientResponseObserver 不是必须的；这里直接用异步 stub 调用即可拿到可取消的 Call
+            // ClientResponseObserver 
             stub.subscribeAlerts(request, new io.grpc.stub.ClientResponseObserver<AlertSubscriptionRequest, AlertMessage>() {
                 @Override
                 public void beforeStart(io.grpc.stub.ClientCallStreamObserver<AlertSubscriptionRequest> requestStream) {

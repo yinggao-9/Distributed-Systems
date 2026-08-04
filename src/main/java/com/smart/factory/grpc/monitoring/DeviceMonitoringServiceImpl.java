@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 
  *  DeviceMonitoringServiceImpl
  * =============================================================================
- * Service 1 — DeviceMonitoringService（client stream RPC ）
+ * Service 1 — DeviceMonitoringService(client stream RPC)
  *
  * The client repeatedly calls onNext(SensorReading) to push readings.
  * The server records each reading (and also writes it into the shared
